@@ -1,0 +1,37 @@
+import sys
+
+def main():
+    alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    mode = sys.stdin.readline().strip()          
+    N = int(sys.stdin.readline().strip())       
+    rotor1 = sys.stdin.readline().strip()
+    rotor2 = sys.stdin.readline().strip()
+    rotor3 = sys.stdin.readline().strip()
+    msg = sys.stdin.readline().strip()
+
+    out = []
+
+    if mode == "ENCODE":
+        for i, ch in enumerate(msg):
+            shift = (ord(ch) - 65 + (N + i)) % 26
+            l1 = alpha[shift]
+            l2 = rotor1[ord(l1) - 65]
+            l3 = rotor2[ord(l2) - 65]
+            l4 = rotor3[ord(l3) - 65]
+            out.append(l4)
+
+    else:  
+        for i, ch in enumerate(msg):
+            p3 = rotor3.index(ch)
+            l_after_r2 = alpha[p3]
+            p2 = rotor2.index(l_after_r2)
+            l_after_r1 = alpha[p2]
+            p1 = rotor1.index(l_after_r1)
+            shifted = alpha[p1]
+            orig_idx = (ord(shifted) - 65 - (N + i)) % 26
+            out.append(alpha[orig_idx])
+
+    print("".join(out))
+
+if __name__ == "__main__":
+    main()
