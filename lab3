@@ -1,0 +1,32 @@
+import sys
+import math
+import binascii
+
+def hex_to_bytes(s):
+    s = s.strip()
+    return binascii.unhexlify(s)
+
+def xor_bytes(a, b, c):
+    L = min(len(a), len(b), len(c))
+    return bytes([a[i] ^ b[i] ^ c[i] for i in range(L)])
+
+def main():
+    hex1 = sys.stdin.readline().strip()
+    hex2 = sys.stdin.readline().strip()
+    hex3 = sys.stdin.readline().strip()
+
+    b1 = hex_to_bytes(hex1)
+    b2 = hex_to_bytes(hex2)
+    b3 = hex_to_bytes(hex3)
+
+    m_bytes = xor_bytes(b1, b2, b3)
+
+    try:
+        plaintext = m_bytes.decode('ascii')
+    except UnicodeDecodeError:
+        plaintext = m_bytes.decode('ascii', errors='replace')
+
+    print(plaintext)
+
+if __name__ == "__main__":
+    main()
